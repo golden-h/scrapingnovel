@@ -86,14 +86,21 @@ export class BookStorage {
         return bookId
     }
 
-    async getBook(bookId: string): Promise<Book | null> {
+    async getBook(bookId: string, checkContent: boolean = false): Promise<Book | null> {
         try {
             console.log('Reading book file:', this.getBookPath(bookId))
             const content = await fs.readFile(this.getBookPath(bookId), 'utf-8')
             const book = JSON.parse(content)
             
-            // Check content status for each chapter
-            book.chapters = await this.checkChapterContent(bookId, book.chapters)
+            // Only check content status if explicitly requested
+            // Return a new object with updated chapters, but don't modify the file
+            if (checkContent) {
+                const updatedChapters = await this.checkChapterContent(bookId, book.chapters)
+                return {
+                    ...book,
+                    chapters: updatedChapters
+                }
+            }
             
             return book
         } catch (error) {
@@ -135,7 +142,7 @@ export class BookStorage {
 
         // Update book JSON
         try {
-            const book = await this.getBook(bookId)
+            const book = await this.getBook(bookId, false)
             if (book) {
                 book.chapters = book.chapters.map(chapter => 
                     chapter.id === chapterId 
@@ -193,7 +200,7 @@ export class BookStorage {
 
     async updateChapterProcessed(bookId: string, chapterId: string, processed: boolean): Promise<boolean> {
         try {
-            const book = await this.getBook(bookId)
+            const book = await this.getBook(bookId, false)
             if (!book) return false
 
             book.chapters = book.chapters.map(chapter => 
@@ -216,7 +223,7 @@ export class BookStorage {
 
     async getChapterStatus(bookId: string, chapterId: string): Promise<{ done?: boolean, translated?: boolean } | null> {
         try {
-            const book = await this.getBook(bookId)
+            const book = await this.getBook(bookId, false)
             if (!book) return null
 
             // Extract the raw chapter number for comparison
@@ -245,7 +252,7 @@ export class BookStorage {
 
     async updateChapterStatus(bookId: string, chapterId: string, status: { done?: boolean, translated?: boolean }): Promise<boolean> {
         try {
-            const book = await this.getBook(bookId)
+            const book = await this.getBook(bookId, false)
             if (!book) {
                 console.error('Book not found:', bookId)
                 return false
@@ -285,7 +292,7 @@ export class BookStorage {
 
     async updateTranslationStatus(bookId: string): Promise<void> {
         try {
-            const book = await this.getBook(bookId)
+            const book = await this.getBook(bookId, false)
             if (!book) return
 
             // Process each chapter

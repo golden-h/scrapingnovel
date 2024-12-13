@@ -9,10 +9,8 @@ export async function GET(
         console.log('Getting book with id:', params.id)
         const storage = new BookStorage()
         
-        // Update translation status before returning the book
-        await storage.updateTranslationStatus(params.id)
-        
-        const book = await storage.getBook(params.id)
+        // Get book with content checking enabled since this is for display
+        const book = await storage.getBook(params.id, true)
         
         if (!book) {
             console.log('Book not found:', params.id)
