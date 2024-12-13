@@ -34,3 +34,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# data files
+/storage/**
+/storage/
+
+# logs and reports
+*.log
+log.html
+report.html
+output.xml
+selenium-screenshot-*.png
