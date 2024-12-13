@@ -8,6 +8,9 @@ export interface Chapter {
     isLoading?: boolean
     hasContent?: boolean
     error?: string
+    processed?: boolean
+    translated?: boolean
+    done?: boolean
 }
 
 export interface Book {
@@ -53,6 +56,13 @@ export class BookStorage {
                 return { ...chapter, hasContent: false }
             }
         }))
+    }
+
+    private async checkTranslation(content: string): Promise<boolean> {
+        // Check if the content contains any English text
+        // This is a simple heuristic - you might want to adjust based on your needs
+        const englishPattern = /[a-zA-Z]{2,}/;  // At least 2 consecutive English letters
+        return englishPattern.test(content);
     }
 
     async saveBook(url: string, title: string, chapters: Chapter[]): Promise<string> {
@@ -145,7 +155,8 @@ export class BookStorage {
 
     async getChapterContent(bookId: string, chapterId: string): Promise<string | null> {
         try {
-            return await fs.readFile(this.getChapterPath(bookId, chapterId), 'utf-8')
+            const content = await fs.readFile(this.getChapterPath(bookId, chapterId), 'utf-8')
+            return content
         } catch {
             return null
         }
@@ -200,6 +211,91 @@ export class BookStorage {
             return true
         } catch {
             return false
+        }
+    }
+
+    async getChapterStatus(bookId: string, chapterId: string): Promise<{ done?: boolean, translated?: boolean } | null> {
+        try {
+            const book = await this.getBook(bookId)
+            if (!book) return null
+
+            // Find chapter by raw ID from URL
+            const chapter = book.chapters.find(c => c.url.includes(`/${chapterId}.html`))
+            if (!chapter) {
+                console.error('Chapter not found:', { bookId, chapterId })
+                return null
+            }
+
+            return {
+                done: chapter.done,
+                translated: chapter.translated
+            }
+        } catch (error) {
+            console.error('Error getting chapter status:', error)
+            return null
+        }
+    }
+
+    async updateChapterStatus(bookId: string, chapterId: string, status: { done?: boolean, translated?: boolean }): Promise<boolean> {
+        try {
+            const book = await this.getBook(bookId)
+            if (!book) {
+                console.error('Book not found:', bookId)
+                return false
+            }
+
+            // Find chapter by raw ID from URL
+            const chapterIndex = book.chapters.findIndex(c => c.url.includes(`/${chapterId}.html`))
+            if (chapterIndex === -1) {
+                console.error('Chapter not found:', { bookId, chapterId })
+                return false
+            }
+
+            book.chapters[chapterIndex] = {
+                ...book.chapters[chapterIndex],
+                ...status
+            }
+
+            await fs.writeFile(
+                this.getBookPath(bookId),
+                JSON.stringify(book, null, 2),
+                { mode: 0o666 }
+            )
+
+            return true
+        } catch (error) {
+            console.error('Error updating chapter status:', error)
+            return false
+        }
+    }
+
+    async updateTranslationStatus(bookId: string): Promise<void> {
+        try {
+            const book = await this.getBook(bookId)
+            if (!book) return
+
+            // Process each chapter
+            const updatedChapters = await Promise.all(book.chapters.map(async chapter => {
+                const content = await this.getChapterContent(bookId, chapter.id)
+                if (!content) return chapter
+
+                const isTranslated = await this.checkTranslation(content)
+                return { ...chapter, translated: isTranslated }
+            }))
+
+            // Update the book with new translation statuses
+            book.chapters = updatedChapters
+
+            // Save the updated book
+            await fs.writeFile(
+                this.getBookPath(bookId),
+                JSON.stringify(book, null, 2),
+                { mode: 0o666 }
+            )
+
+            console.log('Updated translation status for book:', bookId)
+        } catch (error) {
+            console.error('Error updating translation status:', error)
         }
     }
 }

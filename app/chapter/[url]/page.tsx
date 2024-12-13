@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { ChapterContent } from '@/components/ChapterContent'
 import { Loader2 } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 export default function ChapterPage() {
   const params = useParams()
@@ -11,6 +12,8 @@ export default function ChapterPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [bookId, setBookId] = useState('')
+  const [chapterId, setChapterId] = useState('')
+  const [isDone, setIsDone] = useState(false)
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -22,23 +25,22 @@ export default function ChapterPage() {
         // Extract book ID and chapter ID from URL
         const urlObj = new URL(decodedUrl)
         const extractedBookId = urlObj.pathname.split('/')[2] // Get ID after /book/
-        const chapterId = urlObj.pathname.split('/')[3]?.replace('.html', '') // Get the chapter number
+        const rawChapterId = urlObj.pathname.split('/')[3]?.replace('.html', '') // Get the chapter number
         
-        console.log('Extracted IDs:', { bookId: extractedBookId, chapterId })
+        console.log('Extracted IDs:', { bookId: extractedBookId, rawChapterId })
         
-        if (!extractedBookId || !chapterId) {
+        if (!extractedBookId || !rawChapterId) {
           setError('Invalid chapter URL')
           setIsLoading(false)
           return
         }
 
         setBookId(extractedBookId)
-        
-        const formattedChapterId = `chapter-${chapterId}`
+        setChapterId(rawChapterId)
         
         try {
           // First try to get content from storage
-          const storageResponse = await fetch(`/api/books/${extractedBookId}/chapters/${formattedChapterId}`)
+          const storageResponse = await fetch(`/api/books/${extractedBookId}/chapters/${rawChapterId}`)
           console.log('Storage response:', storageResponse.status)
           
           if (storageResponse.ok) {
@@ -63,7 +65,7 @@ export default function ChapterPage() {
               url: decodedUrl,
               domain: 'uukanshu.cc',
               bookId: extractedBookId,
-              chapterId: formattedChapterId
+              chapterId: rawChapterId
             }),
           })
 
@@ -90,6 +92,46 @@ export default function ChapterPage() {
     fetchContent()
   }, [params.url])
 
+  const handleMarkAsDone = async () => {
+    try {
+      if (!bookId || !chapterId) return
+      
+      const response = await fetch(`/api/chapters/${bookId}--${chapterId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ done: true }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update chapter status')
+      }
+
+      setIsDone(true)
+    } catch (err) {
+      console.error('Failed to mark chapter as done:', err)
+    }
+  }
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (!bookId || !chapterId) return
+      
+      try {
+        const response = await fetch(`/api/chapters/${bookId}--${chapterId}/status`)
+        if (response.ok) {
+          const status = await response.json()
+          setIsDone(!!status.done)
+        }
+      } catch (err) {
+        console.error('Failed to fetch chapter status:', err)
+      }
+    }
+
+    fetchStatus()
+  }, [bookId, chapterId])
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -108,6 +150,21 @@ export default function ChapterPage() {
 
   return (
     <div className="container mx-auto py-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-2">
+          {isDone && (
+            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Done</span>
+          )}
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleMarkAsDone}
+          disabled={isDone}
+        >
+          {isDone ? 'Done' : 'Mark Done'}
+        </Button>
+      </div>
       <ChapterContent 
         content={content}
         url={decodeURIComponent(params.url)}

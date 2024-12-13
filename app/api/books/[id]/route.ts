@@ -8,6 +8,10 @@ export async function GET(
     try {
         console.log('Getting book with id:', params.id)
         const storage = new BookStorage()
+        
+        // Update translation status before returning the book
+        await storage.updateTranslationStatus(params.id)
+        
         const book = await storage.getBook(params.id)
         
         if (!book) {

@@ -11,6 +11,8 @@ interface Chapter {
   error?: string
   hasContent?: boolean
   processed?: boolean
+  translated?: boolean
+  done?: boolean
 }
 
 interface ChapterListProps {
@@ -49,9 +51,17 @@ export function ChapterList({ chapters, selectedChapter, onChapterSelect, onProc
                   <AlertCircle className="h-4 w-4 text-destructive" />
                 )}
                 {chapter.hasContent && (
-                  <Save className="h-4 w-4 text-green-500" />
+                  <Check className="h-4 w-4 text-green-500" />
                 )}
-                <span className="truncate">{chapter.title}</span>
+                <div className="flex-grow truncate">{chapter.title}</div>
+                <div className="flex items-center gap-2 ml-2">
+                  {chapter.translated && (
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full whitespace-nowrap">Translated</span>
+                  )}
+                  {chapter.done && (
+                    <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full whitespace-nowrap">Done</span>
+                  )}
+                </div>
               </div>
             </Button>
           </div>
