@@ -29,21 +29,27 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { done } = await request.json()
+    console.log('[API] Received status update request for ID:', params.id);
+    const { translated } = await request.json()
+    console.log('[API] Request body:', { translated });
+    
     const storage = new BookStorage()
     const [bookId, chapterId] = params.id.split('--')
+    console.log('[API] Split IDs:', { bookId, chapterId });
     
-    console.log('Updating chapter status:', { bookId, chapterId, done })
+    console.log('[API] Updating chapter status:', { bookId, chapterId, translated })
     
-    const success = await storage.updateChapterStatus(bookId, chapterId, { done })
+    const success = await storage.updateChapterStatus(bookId, chapterId, { translated })
+    console.log('[API] Update result:', success);
     
     if (!success) {
+      console.error('[API] Failed to update chapter status');
       return NextResponse.json({ error: 'Failed to update chapter status' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error updating chapter status:', error)
+    console.error('[API] Error updating chapter status:', error)
     return NextResponse.json(
       { error: 'Failed to update chapter status' },
       { status: 500 }
