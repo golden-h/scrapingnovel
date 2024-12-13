@@ -19,8 +19,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log('[API] Received request body:', body);
 
-    const { bookId, url, translation } = body;
-    console.log('[API] Extracted fields:', { bookId, url, translation });
+    const { bookId, url, translation, title } = body;
+    console.log('[API] Extracted fields:', { bookId, url, translation, title });
 
     if (!bookId || !url || !translation) {
       console.log('[API] Missing required fields:', { bookId, url, translation });
@@ -40,7 +40,13 @@ export async function POST(request: Request) {
     
     console.log('[API] Writing to file:', filePath);
 
-    await fs.writeFile(filePath, JSON.stringify(translation, null, 2));
+    // Format translation data
+    const translationData = {
+      title: title || "",
+      content: translation
+    };
+
+    await fs.writeFile(filePath, JSON.stringify(translationData, null, 2));
     console.log('[API] Successfully wrote to file');
     return NextResponse.json({ success: true });
   } catch (error) {

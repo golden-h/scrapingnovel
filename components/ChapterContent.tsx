@@ -7,25 +7,28 @@ import { useState, useEffect } from "react"
 interface ChapterContentProps {
   content: string
   url: string
+  bookId: string
 }
 
-export function ChapterContent({ content, url }: ChapterContentProps) {
+export function ChapterContent({ content, url, bookId }: ChapterContentProps) {
   const [translatedContent, setTranslatedContent] = useState("")
+  const [translatedTitle, setTranslatedTitle] = useState("")
   const [isTranslating, setIsTranslating] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
     loadTranslation()
-  }, [url])
+  }, [url, bookId])
 
   const loadTranslation = async () => {
     try {
-      const response = await fetch(`/api/translation?url=${encodeURIComponent(url)}`)
+      const response = await fetch(`/api/translation?url=${encodeURIComponent(url)}&bookId=${bookId}`)
       const data = await response.json()
       
-      if (response.ok && data.translation) {
-        setTranslatedContent(data.translation)
+      if (response.ok && data) {
+        setTranslatedContent(data.content || "")
+        setTranslatedTitle(data.title || "")
       }
     } catch (error) {
       console.error("Error loading translation:", error)
@@ -75,11 +78,35 @@ export function ChapterContent({ content, url }: ChapterContentProps) {
       await fetch("/api/translation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, translation: newTranslation }),
+        body: JSON.stringify({ 
+          url, 
+          bookId,
+          translation: newTranslation,
+          title: translatedTitle
+        }),
       })
     } catch (error) {
       console.error("Error saving translation:", error)
       setError("Failed to save translation")
+    }
+  }
+
+  const handleTitleChange = async (newTitle: string) => {
+    setTranslatedTitle(newTitle)
+    try {
+      await fetch("/api/translation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          url, 
+          bookId,
+          translation: translatedContent,
+          title: newTitle
+        }),
+      })
+    } catch (error) {
+      console.error("Error saving title:", error)
+      setError("Failed to save title")
     }
   }
 
@@ -147,6 +174,8 @@ export function ChapterContent({ content, url }: ChapterContentProps) {
         <div className="mb-4">
           <h3 className="text-sm font-medium mb-2">Title</h3>
           <Textarea
+            value={translatedTitle}
+            onChange={(e) => handleTitleChange(e.target.value)}
             className="min-h-[60px]"
             placeholder="Enter chapter title..."
           />

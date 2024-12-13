@@ -10,6 +10,7 @@ export default function ChapterPage() {
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [bookId, setBookId] = useState('')
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -20,22 +21,24 @@ export default function ChapterPage() {
         
         // Extract book ID and chapter ID from URL
         const urlObj = new URL(decodedUrl)
-        const bookId = urlObj.pathname.split('/')[2] // Get ID after /book/
+        const extractedBookId = urlObj.pathname.split('/')[2] // Get ID after /book/
         const chapterId = urlObj.pathname.split('/')[3]?.replace('.html', '') // Get the chapter number
         
-        console.log('Extracted IDs:', { bookId, chapterId })
+        console.log('Extracted IDs:', { bookId: extractedBookId, chapterId })
         
-        if (!bookId || !chapterId) {
+        if (!extractedBookId || !chapterId) {
           setError('Invalid chapter URL')
           setIsLoading(false)
           return
         }
 
+        setBookId(extractedBookId)
+        
         const formattedChapterId = `chapter-${chapterId}`
         
         try {
           // First try to get content from storage
-          const storageResponse = await fetch(`/api/books/${bookId}/chapters/${formattedChapterId}`)
+          const storageResponse = await fetch(`/api/books/${extractedBookId}/chapters/${formattedChapterId}`)
           console.log('Storage response:', storageResponse.status)
           
           if (storageResponse.ok) {
@@ -59,7 +62,7 @@ export default function ChapterPage() {
             body: JSON.stringify({ 
               url: decodedUrl,
               domain: 'uukanshu.cc',
-              bookId,
+              bookId: extractedBookId,
               chapterId: formattedChapterId
             }),
           })
@@ -108,6 +111,7 @@ export default function ChapterPage() {
       <ChapterContent 
         content={content}
         url={decodeURIComponent(params.url)}
+        bookId={bookId}
       />
     </div>
   )
