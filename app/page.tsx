@@ -292,7 +292,7 @@ export default function Home() {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
+                    {/* <CardContent>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                         {book.chapters.slice(0, 8).map((chapter) => (
                           <div 
@@ -317,7 +317,7 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                    </CardContent>
+                    </CardContent> */}
                   </Card>
                 ))}
               </div>

@@ -25,7 +25,7 @@ export default function ChapterPage() {
         // Extract book ID and chapter ID from URL
         const urlObj = new URL(decodedUrl)
         const extractedBookId = urlObj.pathname.split('/')[2] // Get ID after /book/
-        const rawChapterId = urlObj.pathname.split('/')[3]?.replace('.html', '') // Get the chapter number
+        const rawChapterId = `chapter-${urlObj.pathname.split('/')[3]?.replace('.html', '')}` // Add 'chapter-' prefix
         
         console.log('Extracted IDs:', { bookId: extractedBookId, rawChapterId })
         

@@ -132,14 +132,14 @@ export default function BookPage() {
                 </div>
               </Card>
             </Link>
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={() => handleMarkAsDone(chapter.id)}
               disabled={chapter.done}
             >
               {chapter.done ? 'Done' : 'Mark Done'}
-            </Button>
+            </Button> */}
           </div>
         ))}
       </div>

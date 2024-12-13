@@ -219,8 +219,15 @@ export class BookStorage {
             const book = await this.getBook(bookId)
             if (!book) return null
 
+            // Extract the raw chapter number for comparison
+            const rawChapterNumber = chapterId.replace('chapter-', '')
+            
             // Find chapter by raw ID from URL
-            const chapter = book.chapters.find(c => c.url.includes(`/${chapterId}.html`))
+            const chapter = book.chapters.find(c => {
+                const urlMatch = c.url.match(/\/(\d+)\.html/)
+                return urlMatch && urlMatch[1] === rawChapterNumber
+            })
+
             if (!chapter) {
                 console.error('Chapter not found:', { bookId, chapterId })
                 return null
@@ -244,8 +251,15 @@ export class BookStorage {
                 return false
             }
 
+            // Extract the raw chapter number for comparison
+            const rawChapterNumber = chapterId.replace('chapter-', '')
+            
             // Find chapter by raw ID from URL
-            const chapterIndex = book.chapters.findIndex(c => c.url.includes(`/${chapterId}.html`))
+            const chapterIndex = book.chapters.findIndex(c => {
+                const urlMatch = c.url.match(/\/(\d+)\.html/)
+                return urlMatch && urlMatch[1] === rawChapterNumber
+            })
+
             if (chapterIndex === -1) {
                 console.error('Chapter not found:', { bookId, chapterId })
                 return false
