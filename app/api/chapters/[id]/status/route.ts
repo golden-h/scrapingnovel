@@ -30,16 +30,16 @@ export async function PUT(
 ) {
   try {
     console.log('[API] Received status update request for ID:', params.id);
-    const { translated } = await request.json()
-    console.log('[API] Request body:', { translated });
+    const { translated, done } = await request.json()
+    console.log('[API] Request body:', { translated, done });
     
     const storage = new BookStorage()
     const [bookId, chapterId] = params.id.split('--')
     console.log('[API] Split IDs:', { bookId, chapterId });
     
-    console.log('[API] Updating chapter status:', { bookId, chapterId, translated })
+    console.log('[API] Updating chapter status:', { bookId, chapterId, translated, done })
     
-    const success = await storage.updateChapterStatus(bookId, chapterId, { translated })
+    const success = await storage.updateChapterStatus(bookId, chapterId, { translated, done })
     console.log('[API] Update result:', success);
     
     if (!success) {

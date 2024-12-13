@@ -273,8 +273,9 @@ export class BookStorage {
             }
 
             book.chapters[chapterIndex] = {
-                ...book.chapters[chapterIndex],
-                ...status
+                ...book.chapters[chapterIndex],  // Preserve all existing fields
+                done: status.done ?? book.chapters[chapterIndex].done,  // Only update if provided
+                translated: status.translated ?? book.chapters[chapterIndex].translated  // Keep translated status
             }
 
             await fs.writeFile(
