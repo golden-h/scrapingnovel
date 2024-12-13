@@ -34,14 +34,19 @@ export async function POST(req: Request) {
                 
                 return {
                     title: titleEl?.textContent?.trim() || 'Unknown Title',
-                    chapters: chapters.map((chapter, index) => {
+                    chapters: chapters.map(chapter => {
                         const link = chapter.querySelector('a')
+                        const url = link?.href || ''
+                        // Extract chapter ID from URL
+                        const match = url.match(/\/(\d+)\.html/)
+                        const chapterId = match ? `chapter-${match[1]}` : ''
+                        
                         return {
-                            id: `chapter-${index + 1}`,
-                            title: link?.textContent?.trim() || `Chapter ${index + 1}`,
-                            url: link?.href || '',
+                            id: chapterId,
+                            title: link?.textContent?.trim() || `Chapter ${chapterId}`,
+                            url: url,
                         }
-                    }).filter(chapter => chapter.url) // Filter out any chapters without URLs
+                    }).filter(chapter => chapter.url && chapter.id) // Filter out chapters without URLs or IDs
                 }
             })
 
