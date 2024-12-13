@@ -1,0 +1,62 @@
+import { Button } from "@/components/ui/button"
+import { Loader2, AlertCircle, Save, Check } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+
+interface Chapter {
+  id: string
+  title: string
+  url: string
+  content?: string
+  isLoading?: boolean
+  error?: string
+  hasContent?: boolean
+  processed?: boolean
+}
+
+interface ChapterListProps {
+  chapters: Chapter[];
+  selectedChapter: string | null;
+  onChapterSelect: (chapterId: string) => void;
+  onProcessedChange?: (chapterId: string, processed: boolean) => void;
+}
+
+export function ChapterList({ chapters, selectedChapter, onChapterSelect, onProcessedChange }: ChapterListProps) {
+  const handleProcessedChange = async (chapterId: string, processed: boolean) => {
+    onProcessedChange?.(chapterId, processed)
+  }
+
+  return (
+    <div className="h-[600px] overflow-y-auto pr-4">
+      <div className="space-y-2">
+        {chapters.map((chapter) => (
+          <div key={chapter.id} className="flex items-center gap-2">
+            <Checkbox
+              checked={chapter.processed}
+              onCheckedChange={(checked) => handleProcessedChange(chapter.id, checked as boolean)}
+              className="ml-1"
+            />
+            <Button
+              variant={selectedChapter === chapter.id ? "default" : "outline"}
+              className="w-full justify-start relative"
+              onClick={() => onChapterSelect(chapter.id)}
+              disabled={chapter.isLoading}
+            >
+              <div className="truncate flex items-center gap-2">
+                {chapter.isLoading && (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                )}
+                {chapter.error && (
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                )}
+                {chapter.hasContent && (
+                  <Save className="h-4 w-4 text-green-500" />
+                )}
+                <span className="truncate">{chapter.title}</span>
+              </div>
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

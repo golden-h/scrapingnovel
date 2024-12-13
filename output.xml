@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.1.1 (Python 3.12.0 on win32)" generated="2024-12-12T15:59:16.793931" rpa="true" schemaversion="5">
+<suite id="s1" name="Translate" source="D:\Work\Scraping novel\scrapingnovel\tests\translate.robot">
+<test id="s1-t1" name="Translate Text" line="43">
+<kw name="Get Variable Value" owner="BuiltIn">
+<msg time="2024-12-12T15:59:17.163308" level="INFO">${input_text} = "第1章 我穿越忍界，你卻給我個遊戲製作系統？（新書求支持）
+
+【叮~系統讀取100%，開始激活。】
+
+木葉46年6月17日的夜晚，在自己家中，年輕木葉中忍宇智波啟心神一震，二震，三震，狂震。
+
+巨大的狂喜湧上心頭，讓穿越火影世界十八年卻依舊只是個中忍的宇智波啟差點哭出聲來。
+
+終於！
+
+時隔這麼多年，穿越者必備的外掛終於出現了。
+
+這一刻的喜悅與感動，已經完全淹沒了宇智波啟那顆飽經風霜的內心。
+...</msg>
+<var>${input_text}</var>
+<arg>${input_text}</arg>
+<arg>${EMPTY}</arg>
+<doc>Returns variable value or ``default`` if the variable does not exist.</doc>
+<status status="PASS" start="2024-12-12T15:59:17.162301" elapsed="0.002004"/>
+</kw>
+<kw name="Translate Chapter">
+<kw name="Open Translation GPT">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-12-12T15:59:17.165339" level="INFO">Opening browser 'chrome' to base url 'https://chatgpt.com/g/g-6749b358a57c8191a95344323c84c1e1-dich-truyen-tieng-trung-do-thi'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-12-12T15:59:17.165339" elapsed="4.831059"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2024-12-12T15:59:21.998409" elapsed="0.143410"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>${TIMEOUT}</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2024-12-12T15:59:22.142834" elapsed="0.003519"/>
+</kw>
+<status status="PASS" start="2024-12-12T15:59:17.164809" elapsed="4.981544"/>
+</kw>
+<kw name="Wait For Chat Ready">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2024-12-12T15:59:24.040138" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</msg>
+<msg time="2024-12-12T15:59:24.041139" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</msg>
+<arg>xpath://textarea[@id='prompt-textarea']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2024-12-12T15:59:22.146858" elapsed="1.899834">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-12-12T15:59:24.046692" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2024-12-12T15:59:22.146858" elapsed="1.899834">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</status>
+</kw>
+<kw name="Send Text For Translation">
+<arg>${chapter_text}</arg>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</kw>
+<kw name="Get Translation Result">
+<var>${translation}</var>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${translation}</value>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</return>
+<var>${translation}</var>
+<arg>${input_text}</arg>
+<doc>Translates a chapter using the specialized GPT</doc>
+<status status="FAIL" start="2024-12-12T15:59:17.164809" elapsed="6.882884">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</status>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>Translation Result: ${translation}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</kw>
+<error>
+<value>RETURN</value>
+<value>${translation}</value>
+<status status="NOT RUN" start="2024-12-12T15:59:24.047693" elapsed="0.000000"/>
+</error>
+<doc>Main task to translate text using GPT</doc>
+<status status="FAIL" start="2024-12-12T15:59:17.160762" elapsed="6.887930">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</status>
+</test>
+<status status="FAIL" start="2024-12-12T15:59:16.795944" elapsed="7.253254"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tasks</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Translate">Translate</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2024-12-12T15:59:24.040138" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.109)
+Stacktrace:
+	GetHandleVerifier [0x00007FF7695C6CC5+28821]
+	(No symbol) [0x00007FF769533850]
+	(No symbol) [0x00007FF7693D578A]
+	(No symbol) [0x00007FF7693AF4F5]
+	(No symbol) [0x00007FF769456247]
+	(No symbol) [0x00007FF76946ECE2]
+	(No symbol) [0x00007FF76944F0A3]
+	(No symbol) [0x00007FF76941A778]
+	(No symbol) [0x00007FF76941B8E1]
+	GetHandleVerifier [0x00007FF7698FFCCD+3408029]
+	GetHandleVerifier [0x00007FF76991743F+3504143]
+	GetHandleVerifier [0x00007FF76990B61D+3455469]
+	GetHandleVerifier [0x00007FF76968BDCB+835995]
+	(No symbol) [0x00007FF76953EB6F]
+	(No symbol) [0x00007FF76953A824]
+	(No symbol) [0x00007FF76953A9BD]
+	(No symbol) [0x00007FF76952A1A9]
+	BaseThreadInitThunk [0x00007FFF837C259D+29]
+	RtlUserThreadStart [0x00007FFF8448AF38+40]
+</msg>
+</errors>
+</robot>
