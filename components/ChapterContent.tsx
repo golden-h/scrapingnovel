@@ -89,19 +89,36 @@ export function ChapterContent({ content, url }: ChapterContentProps) {
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Original Content</h2>
-          <Button
-            onClick={handleTranslate}
-            disabled={isTranslating}
-          >
-            {isTranslating ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Opening ChatGPT...
-              </>
-            ) : (
-              "Translate"
-            )}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                navigator.clipboard.writeText(content);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+              }}
+            >
+              {isCopied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              onClick={handleTranslate}
+              disabled={isTranslating}
+            >
+              {isTranslating ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Opening ChatGPT...
+                </>
+              ) : (
+                "Translate"
+              )}
+            </Button>
+          </div>
         </div>
         <div className="original-content whitespace-pre-wrap border rounded-md p-3 bg-gray-50">
           {content}
@@ -126,12 +143,25 @@ export function ChapterContent({ content, url }: ChapterContentProps) {
           </Button>
         </div>
         
-        <Textarea
-          value={translatedContent}
-          onChange={(e) => handleTranslationChange(e.target.value)}
-          className="min-h-[200px]"
-          placeholder="Paste translated content here..."
-        />
+        {/* Title Input */}
+        <div className="mb-4">
+          <h3 className="text-sm font-medium mb-2">Title</h3>
+          <Textarea
+            className="min-h-[60px]"
+            placeholder="Enter chapter title..."
+          />
+        </div>
+
+        {/* Content Input */}
+        <div>
+          <h3 className="text-sm font-medium mb-2">Content</h3>
+          <Textarea
+            value={translatedContent}
+            onChange={(e) => handleTranslationChange(e.target.value)}
+            className="min-h-[200px]"
+            placeholder="Paste translated content here..."
+          />
+        </div>
 
         {error && (
           <div className="text-red-500 mt-4">{error}</div>
