@@ -27,6 +27,7 @@ interface Chapter {
   isLoading?: boolean;
   hasContent?: boolean;
   error?: string;
+  done?: boolean;
 }
 
 interface Book {
@@ -291,7 +292,10 @@ export default function Home() {
                             {book.chapters.length} chapters | Last updated: {formatDate(book.lastUpdated)}
                           </CardDescription>
                           <div className="mt-2 text-sm text-gray-500">
-                            Progress: {book.chapters.filter(ch => ch.hasContent).length} / {book.chapters.length} chapters loaded
+                            Scraped: {book.chapters.filter(ch => ch.hasContent).length} / {book.chapters.length} chapters 
+                          </div>
+                          <div className="mt-1 text-sm text-gray-500">
+                            Post Done: {book.chapters.filter(ch => ch.done).length} / {book.chapters.length} chapters
                           </div>
                         </div>
                         <div className="flex gap-2">
