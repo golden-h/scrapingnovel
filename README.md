@@ -1,91 +1,53 @@
 # Scraping Novel System
 
-This project is a web application designed for scraping, translating, and displaying novels. It consists of a Next.js web application and a Chrome extension working together.
+## System Overview
 
-## System Requirements
+Chức năng scraping dữ liệu truyện từ trang web truyện trung quốc, thêm tính năng tự động đẩy text sang chagpt để dịch, nhận bản dịch và lưu trữ local. Sau khi chỉnh sửa bản dịch bằng tay thì đẩy lên truyện city.
 
-- Node.js (Latest LTS version recommended)
-- Chrome browser (Latest version)
-- Internet connection for translation services
-- Storage space for translated content
+# Chuẩn bị:
+## Tools chính
+Pull code về
 
-## Project Structure
-
-- `/app`: Main application code
-- `/components`: Reusable UI components
-- `/services`: Backend services
-- `/utils`: Utility functions
-- `/storage`: Translation storage
-- `/chrome-extension`: Browser extension code
-
-## Installation
-
-1. Install project dependencies:
-```bash
+Bật IDE
+Bật terminal
+cd tới thư mục scrapingnovel
 npm install
-```
 
-2. Install the Chrome extension:
-   - Open Chrome browser
-   - Go to `chrome://extensions/`
-   - Enable "Developer mode" (top right corner)
-   - Click "Load unpacked"
-   - Select the `/chrome-extension` directory from this project
+## Chrome Extension bổ trợ
+Pull thêm code từ repo https://github.com/golden-h/chrome-extension
+Pull về đâu cũng được
+Bât chrome or edge
+truy cập :  edge://extensions/
+Check bật developer mode ở bên trái, hoặc đâu đó
+Bấm load unpacked -> Tìm folder chrome-extension và open
+Khi này extentions "Novel Translator" sẽ hiện ở danh sách extentions 
 
-## Development
+## Tạo link trên truyencity
+vào https://truyencity.com/admin/stories/create
+tạo một truyện mới để làm đường dẫn cho hệ thống post truyện.
+khi có link truyện thì vào chrome-extension\config.json -> Điền link vào url và lưu
+*Chú ý mỗi lần thay đổi code extension, phải reload lại extension bằng cách vào edge://extensions/ -> tìm đến "Novel Translator" -> bấm nút reload.
 
-Run the development server:
-
-```bash
+# Sử dụng
+trong terminal cd tới thư mục scrapingnovel
 npm run dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+truy cập localhost:3000
 
-## Features
+Điền link truyện ở trang uushanku (hiện tại mới chỉ support trang này)
 
-- Novel listing and chapter navigation
-- Translation status tracking
-- Chapter content display
-- Filter system for translated/untranslated chapters
-- Chrome extension for:
-  - Content extraction from novel websites
-  - Integration with ChatGPT for translation
-  - Translation injection into web pages
-  - Chapter status management
+Bấm get chapters
 
-## Usage
+Chờ load xong tất cả các chapters, khoảng 5-10s một chapter * XXX chapters.
 
-1. Start the web application:
-```bash
-npm run dev
-```
+Khi load xong thì bấm vỉewchapters
 
-2. Ensure the Chrome extension is installed and enabled
+Hiện danh sách chapters
 
-3. Visit a supported novel website through Chrome
+Bấm một chapter, khi này sẽ hiển thị bản raw tiếng Trung được scraped về
 
-4. Use the extension to:
-   - Extract novel content
-   - Manage translations
-   - Track chapter status
+Xem ở góc dưới bên phải có hiện 2 button "translate with chagpt" và "post to truyencity" không. Nếu không thì reload trang.
 
-5. View translated content through the web application
+b1: bấm "translate with chagpt" và chờ. Kết quá sẽ được tự động lấy về và dán vào khung translated và báo hoàn thành.
+b2: bấm "post to truyencity"  sẽ tự động post bản dịch về truyện city. nếu hoàn thành sẽ trở lại trang list và có tag "translated" "done"
 
-## Notes
-
-- The system uses ChatGPT for translations
-- Translations are stored locally in JSON format
-- Chapter status is tracked for translation progress
-- The Chrome extension integrates with specific novel websites
-
-## Troubleshooting
-
-If you encounter any issues:
-
-1. Ensure all dependencies are installed correctly
-2. Check if the Chrome extension is properly loaded
-3. Verify your internet connection for translation services
-4. Check the storage directory permissions
-
-For more detailed technical information, refer to `SYSTEM_DOCUMENTATION.txt`.
