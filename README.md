@@ -29,6 +29,9 @@ khi có link truyện thì vào chrome-extension\config.json -> Điền link và
 *Chú ý mỗi lần thay đổi code extension, phải reload lại extension bằng cách vào edge://extensions/ -> tìm đến "Novel Translator" -> bấm nút reload.
 
 # Sử dụng
+*Điều kiện : trên browser Phải đăng nhập sẵn vào chatgpt có plus và truyencity.com
+
+
 trong terminal cd tới thư mục scrapingnovel
 npm run dev
 
@@ -51,3 +54,4 @@ Xem ở góc dưới bên phải có hiện 2 button "translate with chagpt" và
 b1: bấm "translate with chagpt" và chờ. Kết quá sẽ được tự động lấy về và dán vào khung translated và báo hoàn thành.
 b2: bấm "post to truyencity"  sẽ tự động post bản dịch về truyện city. nếu hoàn thành sẽ trở lại trang list và có tag "translated" "done"
 
+*khi tool đang chạy auto thì không nên tương tác gì với màn hình để tránh lỗi
