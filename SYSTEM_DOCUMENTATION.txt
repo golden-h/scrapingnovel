@@ -1,0 +1,107 @@
+# Scraping Novel System Documentation
+
+## System Overview
+The Scraping Novel system is a web application designed for scraping, translating, and displaying novels. It consists of three main components:
+1. Next.js Web Application
+2. Chrome Extension
+3. Translation Storage System
+
+## Technical Stack
+- Frontend Framework: Next.js 14.2
+- UI Libraries: React 18, Tailwind CSS
+- Browser Extension: Chrome Extension
+- Translation Integration: ChatGPT API
+- Additional Libraries: Puppeteer, Cheerio for web scraping
+
+## Component Details
+
+### 1. Web Application (Next.js)
+- Built using Next.js App Router architecture
+- Key Directories:
+  * /app: Main application code
+  * /components: Reusable UI components
+  * /services: Backend services
+  * /utils: Utility functions
+
+Features:
+- Novel listing and chapter navigation
+- Translation status tracking
+- Chapter content display
+- Filter system for translated/untranslated chapters
+
+### 2. Chrome Extension
+Location: /chrome-extension
+Main Features:
+- Content extraction from novel websites
+- Integration with ChatGPT for translation
+- Translation injection into web pages
+- Chapter status management
+- Notification system
+
+Key Functions:
+- extractOriginalContent(): Extracts novel content from web pages
+- handleTranslation(): Manages the translation process
+- saveTranslation(): Stores translated content
+- updateChapterStatus(): Tracks chapter translation status
+
+### 3. Translation Storage System
+Location: /storage/translations
+Purpose:
+- Stores translated novel chapters
+- Maintains translation status
+- Organizes content by novel and chapter IDs
+
+## Data Flow
+1. Content Extraction:
+   - Chrome extension extracts content from source websites
+   - Content is processed and prepared for translation
+
+2. Translation Process:
+   - Content is sent to ChatGPT for translation
+   - Translations are stored in the storage system
+
+3. Content Display:
+   - Web application retrieves and displays translated content
+   - Users can filter and navigate through chapters
+
+## Key Features
+1. Novel Management:
+   - Chapter listing
+   - Translation status tracking
+   - Content filtering
+
+2. Translation:
+   - Automated translation via ChatGPT
+   - Translation progress tracking
+   - Translation storage and retrieval
+
+3. User Interface:
+   - Chapter navigation
+   - Translation status indicators
+   - Filter system for viewing translated/untranslated content
+
+## System Requirements
+- Node.js environment
+- Chrome browser for extension
+- Internet connection for translation services
+- Storage space for translated content
+
+## Setup Instructions
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Run development server:
+   ```
+   npm run dev
+   ```
+
+3. Install Chrome extension:
+   - Load unpacked extension from /chrome-extension directory
+
+## Notes
+- The system uses ChatGPT for translations
+- Translations are stored locally in JSON format
+- Chapter status is tracked for translation progress
+- The Chrome extension integrates with specific novel websites
