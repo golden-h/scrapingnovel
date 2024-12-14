@@ -25,9 +25,9 @@ Chức năng scraping dữ liệu truyện từ trang web truyện trung quốc,
 ### Tạo link trên truyencity
 - Vào https://truyencity.com/admin/stories/create
 - Tạo một truyện mới để làm đường dẫn cho hệ thống post truyện
-- Khi có link truyện thì vào chrome-extension\config.json -> Điền link vào url và lưu
+- Khi có link truyện thì vào chrome-extension\config.json (đổi tên file sample_config.json -> config.json) -> Điền link vào url và lưu
 
-*Chú ý: Mỗi lần thay đổi code extension, phải reload lại extension bằng cách vào edge://extensions/ -> tìm đến "Novel Translator" -> bấm nút reload.
+*Chú ý: Mỗi lần thay đổi code extension ví dụ khi làm việc với một truyện mới, phải reload lại extension bằng cách vào edge://extensions/ -> tìm đến "Novel Translator" -> bấm nút reload.
 
 ## Sử dụng
 *Điều kiện: Trên browser phải đăng nhập sẵn vào chatgpt có plus và truyencity.com
