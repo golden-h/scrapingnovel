@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scraping Novel System
 
-## Getting Started
+This project is a web application designed for scraping, translating, and displaying novels. It consists of a Next.js web application and a Chrome extension working together.
 
-First, run the development server:
+## System Requirements
+
+- Node.js (Latest LTS version recommended)
+- Chrome browser (Latest version)
+- Internet connection for translation services
+- Storage space for translated content
+
+## Project Structure
+
+- `/app`: Main application code
+- `/components`: Reusable UI components
+- `/services`: Backend services
+- `/utils`: Utility functions
+- `/storage`: Translation storage
+- `/chrome-extension`: Browser extension code
+
+## Installation
+
+1. Install project dependencies:
+```bash
+npm install
+```
+
+2. Install the Chrome extension:
+   - Open Chrome browser
+   - Go to `chrome://extensions/`
+   - Enable "Developer mode" (top right corner)
+   - Click "Load unpacked"
+   - Select the `/chrome-extension` directory from this project
+
+## Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Novel listing and chapter navigation
+- Translation status tracking
+- Chapter content display
+- Filter system for translated/untranslated chapters
+- Chrome extension for:
+  - Content extraction from novel websites
+  - Integration with ChatGPT for translation
+  - Translation injection into web pages
+  - Chapter status management
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. Start the web application:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Ensure the Chrome extension is installed and enabled
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Visit a supported novel website through Chrome
 
-## Deploy on Vercel
+4. Use the extension to:
+   - Extract novel content
+   - Manage translations
+   - Track chapter status
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. View translated content through the web application
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- The system uses ChatGPT for translations
+- Translations are stored locally in JSON format
+- Chapter status is tracked for translation progress
+- The Chrome extension integrates with specific novel websites
+
+## Troubleshooting
+
+If you encounter any issues:
+
+1. Ensure all dependencies are installed correctly
+2. Check if the Chrome extension is properly loaded
+3. Verify your internet connection for translation services
+4. Check the storage directory permissions
+
+For more detailed technical information, refer to `SYSTEM_DOCUMENTATION.txt`.
