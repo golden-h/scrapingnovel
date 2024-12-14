@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from 'next/link'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { displayVersion } from '@/lib/version'
 
 interface Chapter {
   id: string;
@@ -358,6 +359,7 @@ export default function Home() {
         <p>Contact: huyhoang270@gmail.com</p>
         <p className="mt-2">Disclaimer: This is a free application for research and learning purposes only.<br/>
         The author is not responsible for any legal or copyright issues related to its use.</p>
+        <p className="mt-2">{displayVersion()}</p>
       </footer>
     </main>
   )
