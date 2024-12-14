@@ -20,7 +20,7 @@ interface ChapterListProps {
 }
 
 export function ChapterList({ chapters, selectedChapter, onChapterSelect }: ChapterListProps) {
-  const [showTranslated, setShowTranslated] = useState<boolean | null>(null);
+  const [showTranslated, setShowTranslated] = useState<boolean | null>(false);
   const [showDone, setShowDone] = useState<boolean | null>(null);
 
   const filteredChapters = chapters.filter(chapter => {
