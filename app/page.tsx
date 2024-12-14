@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2024 Quy Quàng AI Coder
+ * Contact: huyhoang270@gmail.com
+ * 
+ * Disclaimer: This is a free application for research and learning purposes only.
+ * The author is not responsible for any legal or copyright issues related to its use.
+ */
+
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -212,7 +220,7 @@ export default function Home() {
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2">
               <Book className="h-6 w-6 text-primary" />
-              <CardTitle className="text-2xl">Novel Text Extractor</CardTitle>
+              <CardTitle className="text-2xl">Truyencity Auto Tool</CardTitle>
             </div>
             <CardDescription>Extract and save novels from chinese websites</CardDescription>
           </CardHeader>
@@ -345,6 +353,12 @@ export default function Home() {
           </Card>
         )}
       </div>
+      <footer className="mt-8 text-center text-sm text-gray-500 pb-4">
+        <p> 2024 Quy Quàng AI Coder</p>
+        <p>Contact: huyhoang270@gmail.com</p>
+        <p className="mt-2">Disclaimer: This is a free application for research and learning purposes only.<br/>
+        The author is not responsible for any legal or copyright issues related to its use.</p>
+      </footer>
     </main>
   )
 }
