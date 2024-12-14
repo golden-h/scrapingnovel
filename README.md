@@ -46,3 +46,13 @@ Chức năng scraping dữ liệu truyện từ trang web truyện trung quốc,
 12. Bấm "post to truyencity" sẽ tự động post bản dịch về truyện city. Nếu hoàn thành sẽ trở lại trang list và có tag "translated" "done"
 
 *Khi tool đang chạy auto thì không nên tương tác gì với màn hình để tránh lỗi
+
+
+#ROAD MAP
+- [x] Module cho uushanku
+- [ ] Bổ sung module cho ranwenla
+- [ ] Bổ sung module cho du11du
+- [ ] Dịch bằng llm API
+- [ ] Quản lý user sử dụng
+- [ ] 
+- [ ] 
