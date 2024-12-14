@@ -112,46 +112,6 @@ export function ChapterContent({ content, url, bookId }: ChapterContentProps) {
 
   return (
     <div className="space-y-6">
-      {/* Original Content */}
-      <Card className="p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Original Content</h2>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
-                navigator.clipboard.writeText(content);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 2000);
-              }}
-            >
-              {isCopied ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
-            </Button>
-            <Button
-              onClick={handleTranslate}
-              disabled={isTranslating}
-            >
-              {isTranslating ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Opening ChatGPT...
-                </>
-              ) : (
-                "Translate"
-              )}
-            </Button>
-          </div>
-        </div>
-        <div className="original-content whitespace-pre-wrap border rounded-md p-3 bg-gray-50">
-          {content}
-        </div>
-      </Card>
-
       {/* Translated Content */}
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
@@ -196,6 +156,35 @@ export function ChapterContent({ content, url, bookId }: ChapterContentProps) {
           <div className="text-red-500 mt-4">{error}</div>
         )}
       </Card>
+      {/* Original Content */}
+      <Card className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Original Content</h2>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                navigator.clipboard.writeText(content);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+              }}
+            >
+              {isCopied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+            
+          </div>
+        </div>
+        <div className="original-content whitespace-pre-wrap border rounded-md p-3 bg-gray-50">
+          {content}
+        </div>
+      </Card>
+
+      
     </div>
   )
 }
