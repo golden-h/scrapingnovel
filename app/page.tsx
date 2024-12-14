@@ -4,6 +4,7 @@
  * 
  * Disclaimer: This is a free application for research and learning purposes only.
  * The author is not responsible for any legal or copyright issues related to its use.
+ * Hereby, you acknowledge that you are using this application at your own risk.
  */
 
 'use client'
