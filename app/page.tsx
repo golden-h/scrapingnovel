@@ -7,6 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Book, Loader2, CheckCircle2, Circle, Trash2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from 'next/link'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 
 interface Chapter {
   id: string;
@@ -30,6 +32,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [books, setBooks] = useState<Book[]>([])
+  const [selectedSource, setSelectedSource] = useState('uukanshu')
 
   useEffect(() => {
     // Load saved books on mount
@@ -150,7 +153,7 @@ export default function Home() {
         },
         body: JSON.stringify({ 
           url: chapter.url,
-          domain: 'uukanshu.cc',
+          domain: selectedSource === 'uukanshu' ? 'uukanshu.cc' : '',
           bookId,
           chapterId: chapter.id
         }),
@@ -211,35 +214,52 @@ export default function Home() {
               <Book className="h-6 w-6 text-primary" />
               <CardTitle className="text-2xl">Novel Text Extractor</CardTitle>
             </div>
-            <CardDescription>Extract and save novels from uukanshu.cc</CardDescription>
+            <CardDescription>Extract and save novels from chinese websites</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Enter novel URL from uukanshu.cc"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                disabled={isLoading}
-              />
-              <Button onClick={extractChapters} disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Loading
-                  </>
-                ) : (
-                  'Get Chapters'
-                )}
-              </Button>
-            </div>
+            <div className="space-y-4">
+              <RadioGroup
+                value={selectedSource}
+                onValueChange={setSelectedSource}
+                className="flex space-x-4 mb-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="uukanshu" id="uukanshu" />
+                  <Label htmlFor="uukanshu">uukanshu.cc</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="comingsoon" id="comingsoon" disabled />
+                  <Label htmlFor="comingsoon" className="text-gray-500">Coming Soon</Label>
+                </div>
+              </RadioGroup>
 
-            {error && (
-              <Alert variant="destructive" className="mt-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Enter novel URL"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  disabled={isLoading}
+                />
+                <Button onClick={extractChapters} disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Loading
+                    </>
+                  ) : (
+                    'Get Chapters'
+                  )}
+                </Button>
+              </div>
+
+              {error && (
+                <Alert variant="destructive" className="mt-4">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+            </div>
           </CardContent>
         </Card>
 
