@@ -1,13 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { ChapterContent } from '@/components/ChapterContent'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ArrowLeft } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
 export default function ChapterPage() {
   const params = useParams()
+  const router = useRouter()
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -150,6 +151,17 @@ export default function ChapterPage() {
 
   return (
     <div className="container mx-auto py-4">
+      <div className="mb-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => router.push(`/book/${bookId}`)}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Chapter List
+        </Button>
+      </div>
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
           {isDone && (

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ChapterList } from "@/components/ChapterList"
 
 interface Chapter {
   id: string
@@ -108,41 +109,17 @@ export default function BookPage() {
         </div>
       </div>
       
-      <div className="grid gap-4">
-        {book.chapters.map((chapter, index) => (
-          <div key={chapter.id} className="flex items-center gap-2">
-            <Link 
-              href={`/chapter/${encodeURIComponent(chapter.url)}`}
-              className="flex-grow"
-            >
-              <Card className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">Chapter {index + 1}</div>
-                    <div className="text-sm text-gray-600 mt-1">{chapter.title}</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {chapter.translated && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full whitespace-nowrap">Translated</span>
-                    )}
-                    {chapter.done && (
-                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full whitespace-nowrap">Done</span>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </Link>
-            {/* <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleMarkAsDone(chapter.id)}
-              disabled={chapter.done}
-            >
-              {chapter.done ? 'Done' : 'Mark Done'}
-            </Button> */}
-          </div>
-        ))}
-      </div>
+      <ChapterList 
+        chapters={book.chapters}
+        selectedChapter={selectedChapter}
+        onChapterSelect={(chapterId) => {
+          setSelectedChapter(chapterId);
+          const chapter = book.chapters.find(c => c.id === chapterId);
+          if (chapter) {
+            window.location.href = `/chapter/${encodeURIComponent(chapter.url)}`;
+          }
+        }}
+      />
     </div>
   )
 }
