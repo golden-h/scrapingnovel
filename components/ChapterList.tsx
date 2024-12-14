@@ -25,7 +25,8 @@ export function ChapterList({ chapters, selectedChapter, onChapterSelect }: Chap
 
   const filteredChapters = chapters.filter(chapter => {
     if (showTranslated !== null && chapter.translated !== showTranslated) return false;
-    if (showDone !== null && chapter.done !== showDone) return false;
+    if (showDone === true && chapter.done !== true) return false;
+    if (showDone === false && chapter.done === true) return false;
     return true;
   });
 
