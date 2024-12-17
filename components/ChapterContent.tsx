@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, Copy, Loader2 } from "lucide-react"
+import { Check, Copy, Loader2, Languages } from "lucide-react"
 import { title } from "process"
 import { useState, useEffect } from "react"
+import { googleGenerativeService } from "@/app/services/googleGenerative"
 
 interface ChapterContentProps {
   content: string
@@ -37,25 +38,42 @@ export function ChapterContent({ content, url, bookId, title }: ChapterContentPr
     }
   }
 
-  const handleTranslate = async () => {
-    if (!content) return
+  const handleGoogleTranslate = async () => {
+    if (!content || !title) return
     
     setIsTranslating(true)
+    setError("")
+    
     try {
-      // Send content to chrome extension via chrome.runtime
-      if (typeof chrome !== 'undefined' && chrome.runtime) {
-        chrome.runtime.sendMessage({
-          type: 'SET_TRANSLATION_CONTENT',
-          content: content
-        });
-      } else {
-        // Fallback to clipboard if extension not available
-        await navigator.clipboard.writeText(content)
-      }
-      window.open("https://chat.openai.com/g/g-6749b358a57c8191a95344323c84c1e1-dich-truyen-tieng-trung-do-thi", "_blank")
+      // Translate title first (usually small, no need for chunks)
+      const translatedTitleText = await googleGenerativeService.translate(title, 500);
+      
+      // Extract text after ":" from translated title
+      const titleParts = translatedTitleText.split(':');
+      const cleanTitle = titleParts.length > 1 
+        ? titleParts[1].trim() 
+        : translatedTitleText.trim();
+      
+      setTranslatedTitle(cleanTitle);
+      
+      // Translate content in chunks
+      const translatedContentText = await googleGenerativeService.translate(content);
+      setTranslatedContent(translatedContentText)
+      
+      // Save translation
+      await fetch("/api/translation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          url, 
+          bookId,
+          translation: translatedContentText,
+          title: cleanTitle
+        }),
+      })
     } catch (error) {
-      console.error("Error setting content for translation:", error)
-      setError("Failed to prepare content for translation")
+      console.error("Error translating with Google API:", error)
+      setError("Failed to translate using Google API. Please try again.")
     } finally {
       setIsTranslating(false)
     }
@@ -113,9 +131,34 @@ export function ChapterContent({ content, url, bookId, title }: ChapterContentPr
   }
 
   return (
-    <div className="space-y-6">
-      {/* Translated Content */}
-      <Card className="p-6">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center mb-4">
+        <Button
+          onClick={handleGoogleTranslate}
+          disabled={!content || isTranslating}
+          variant="secondary"
+          className="w-[200px]"
+        >
+          {isTranslating ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Translating...
+            </>
+          ) : (
+            <>
+              <Languages className="mr-2 h-4 w-4" />
+              Translate with Google
+            </>
+          )}
+        </Button>
+
+        {error && (
+          <p className="text-sm text-red-500">{error}</p>
+        )}
+      </div>
+
+      <Card className="p-4">
+        {/* Translated Content */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Translated Content</h2>
           <Button
@@ -155,11 +198,11 @@ export function ChapterContent({ content, url, bookId, title }: ChapterContentPr
         </div>
 
         {error && (
-          <div className="text-red-500 mt-4">{error}</div>
+          <p className="text-sm text-red-500 mt-2">{error}</p>
         )}
       </Card>
       {/* Original Content */}
-      <Card className="p-6">
+      <Card className="p-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Original Content</h2>
           <div className="flex gap-2">
@@ -188,8 +231,6 @@ export function ChapterContent({ content, url, bookId, title }: ChapterContentPr
           {content}
         </div>
       </Card>
-
-      
     </div>
   )
 }
