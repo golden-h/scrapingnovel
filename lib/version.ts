@@ -4,8 +4,8 @@ interface VersionInfo {
 }
 
 export const getVersionInfo = (): VersionInfo => ({
-  version: '0.1.12',
-  buildDate: '2024-12-17T11:58:15+0000',
+  version: '0.1.13',
+  buildDate: '2024-12-17T12:09:39+0000',
 });
 
 export const displayVersion = (): string => {
