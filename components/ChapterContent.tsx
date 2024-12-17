@@ -2,15 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Check, Copy, Loader2 } from "lucide-react"
+import { title } from "process"
 import { useState, useEffect } from "react"
 
 interface ChapterContentProps {
   content: string
   url: string
   bookId: string
+  title: string
 }
 
-export function ChapterContent({ content, url, bookId }: ChapterContentProps) {
+export function ChapterContent({ content, url, bookId, title }: ChapterContentProps) {
   const [translatedContent, setTranslatedContent] = useState("")
   const [translatedTitle, setTranslatedTitle] = useState("")
   const [isTranslating, setIsTranslating] = useState(false)
@@ -178,6 +180,9 @@ export function ChapterContent({ content, url, bookId }: ChapterContentProps) {
             </Button>
             
           </div>
+        </div>        
+        <div className="original-title whitespace-pre-wrap border rounded-md p-3 bg-gray-50">
+            {title || 'No title available'}
         </div>
         <div className="original-content whitespace-pre-wrap border rounded-md p-3 bg-gray-50">
           {content}

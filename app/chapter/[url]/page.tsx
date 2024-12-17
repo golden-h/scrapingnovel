@@ -15,6 +15,7 @@ export default function ChapterPage() {
   const [bookId, setBookId] = useState('')
   const [chapterId, setChapterId] = useState('')
   const [isDone, setIsDone] = useState(false)
+  const [chapterTitle, setChapterTitle] = useState('')
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -40,7 +41,17 @@ export default function ChapterPage() {
         setChapterId(rawChapterId)
         
         try {
-          // First try to get content from storage
+          // First get book data to get chapter title
+          const bookResponse = await fetch(`/api/books/${extractedBookId}`)
+          if (bookResponse.ok) {
+            const bookData = await bookResponse.json()
+            const chapter = bookData.book.chapters.find(c => c.id === rawChapterId)
+            if (chapter) {
+              setChapterTitle(chapter.title)
+            }
+          }
+          
+          // Then try to get content from storage
           const storageResponse = await fetch(`/api/books/${extractedBookId}/chapters/${rawChapterId}`)
           console.log('Storage response:', storageResponse.status)
           
@@ -181,6 +192,7 @@ export default function ChapterPage() {
         content={content}
         url={decodeURIComponent(params.url)}
         bookId={bookId}
+        title={chapterTitle}
       />
     </div>
   )
