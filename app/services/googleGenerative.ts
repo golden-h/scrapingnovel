@@ -16,7 +16,7 @@ export class GoogleGenerativeService {
     
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({
-      model: "gemini-pro",
+      model: "gemini-2.0-flash-thinking-exp-1219",
       generationConfig: this.getDefaultConfig(),
     });
   }
